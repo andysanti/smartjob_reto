@@ -22,7 +22,7 @@ public class UserDto {
 
     private String name;
 
-    private String email1;
+    private String email;
 
     private String password;
 
@@ -42,7 +42,7 @@ public class UserDto {
 
         UserDto user = new UserDto();
         user.setId(usuario.getId());
-        user.setEmail1(usuario.getEmail());
+        user.setEmail(usuario.getEmail());
         user.setName(usuario.getName());
         user.setActive(usuario.isActive());
         user.setCreated(usuario.getCreated());

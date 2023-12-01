@@ -56,7 +56,7 @@ public class UsuarioService {
 
         //validar si existe email
 
-        List<Usuario> exits =usuarioRepository.findByEmail(userDto.getEmail1());
+        List<Usuario> exits =usuarioRepository.findByEmail(userDto.getEmail());
         if(!exits.isEmpty()){
             throw new NotUniqueEmailException("el email ya esta registrado");
         }
@@ -90,7 +90,7 @@ public class UsuarioService {
 
         String regexEmail = configPatterns.getEmailPattern();
         Pattern pattern = Pattern.compile(regexEmail);
-        Matcher matcher = pattern.matcher(userDto.getEmail1());
+        Matcher matcher = pattern.matcher(userDto.getEmail());
         if(!matcher.matches()){
             throw new NotUniqueEmailException("el email no tiene formato aaa@domain.cl");
         }
@@ -123,7 +123,7 @@ public class UsuarioService {
         Usuario usuario = new Usuario();
 
         usuario.setName(userDto.getName());
-        usuario.setEmail(userDto.getEmail1());
+        usuario.setEmail(userDto.getEmail());
         usuario.setPassword(userDto.getPassword());
         usuario.setCreated(LocalDateTime.now());
         usuario.setActive(true);
