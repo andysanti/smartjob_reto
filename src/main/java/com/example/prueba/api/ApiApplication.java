@@ -27,7 +27,7 @@ public class ApiApplication {
 					.addFilterAfter(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
 					.authorizeRequests()
 					.antMatchers(HttpMethod.POST, "/api/users/").permitAll()
-					.antMatchers(HttpMethod.GET, "/h2console/**").permitAll()
+					.antMatchers( "/h2console/**").permitAll()
 
 					.antMatchers(HttpMethod.GET, "/v3/api-docs/","/swagger-ui/*").permitAll()
 					.anyRequest().authenticated();

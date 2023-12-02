@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.Key;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -40,11 +41,25 @@ public class UsuarioService {
     @Autowired
     ConfigPatterns configPatterns;
 
+    public List<TelefonoDto> getAllPhonesById(Integer id){
+        List<TelefonoDto> list = new ArrayList<>();
+         telefonoRepository.findById(id).forEach(
+                telefono -> list.add(convertToTelefonoDao(telefono))
+        );
+        return list;
+
+    }
+
+
     public List<UserDto> getAll(){
 
         List<UserDto> list = new ArrayList<>();
          usuarioRepository.findAll().forEach(
-                usuario -> {list.add(UserDto.toDto(usuario));}
+                usuario -> {
+                    UserDto userDto= UserDto.toDto(usuario);
+                    userDto.setPhones(getAllPhonesById(usuario.getId()));
+                    list.add(userDto);
+                }
         );
         return list;
     }
@@ -68,21 +83,13 @@ public class UsuarioService {
         String token=getJWTToken(usuario.getName());
         usuario.setToken(token);
         usuario= usuarioRepository.save(usuario);
-
         insertTelefono(userDto,usuario);
+        UserDto userInserted = UserDto.toDto(usuario);
 
-        Optional<Usuario> usuarioOptional =usuarioRepository.findById(usuario.getId());
-        if(usuarioOptional.isPresent()){
-            UserDto userDto1= UserDto.toDto(usuario);
-            userDto1.setMensaje("registro exitoso");
-            return userDto1;
-        }else{
-            UserDto user =new UserDto();
-            user.setMensaje("registro fallido");
-            return  user;
-        }
+        userInserted.setPhones(getAllPhonesById(usuario.getId()));
+        userInserted.setMensaje("registro exitoso");
 
-
+        return userInserted;
 
     }
 
@@ -144,11 +151,11 @@ public class UsuarioService {
         return telefono;
     }
 
-    public static  TelefonoDto getTelefono(Telefono telefono){
+    private  TelefonoDto convertToTelefonoDao(Telefono telefono){
         TelefonoDto telefonoDto = new TelefonoDto();
         telefonoDto.setCitycode(telefono.getCityCode());
         telefonoDto.setCountrycode(telefono.getCountryCode());
-
+        telefonoDto.setNumber(telefono.getNumero());
 
         return telefonoDto;
     }
