@@ -29,7 +29,7 @@ public class ApiApplication {
 					.antMatchers(HttpMethod.POST, "/api/users/").permitAll()
 					.antMatchers( "/h2console/**").permitAll()
 
-					.antMatchers(HttpMethod.GET, "/v3/api-docs/","/swagger-ui/*").permitAll()
+					.antMatchers(HttpMethod.GET, "/v3/api-docs","/v3/api-docs/*","/swagger-ui/*","/swagger-ui.html").permitAll()
 					.anyRequest().authenticated();
 		}
 	}
